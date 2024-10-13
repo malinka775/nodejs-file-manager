@@ -3,12 +3,11 @@ import {join} from 'node:path';
 import { EntityTypes, ErrorMessages } from '../consts/constants.js';
 
 const goUp = () => {
-  process.chdir('..');
-  console.log('You are currently in', process.cwd());
+  return new Promise((resolve, _) => resolve(process.chdir('..')));
 }
 
 const goToDir = (dirname) => {
-  process.chdir(dirname);
+  return new Promise((resolve, _) => resolve(process.chdir(dirname)));
 }
 
 const printContents = async () => {
@@ -31,4 +30,4 @@ const printContents = async () => {
   }
 }
 
-await printContents();
+export {goUp, goToDir, printContents}

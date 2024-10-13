@@ -1,8 +1,11 @@
 import { homedir } from "node:os";
 import process from "node:process";
 import util from "node:util";
+import {createInterface} from 'node:readline/promises';
 
 import { ErrorMessages, CLI_Args } from "../consts/constants.js";
+import { goUp, goToDir, printContents } from "../navigation/index.js";
+import { addFile, printFile, renameFile } from "../fileOperations/index.js";
 
 const getUserName = (targetArg) => {
 
@@ -34,18 +37,41 @@ const logCurrentDir = () => {
 let USERNAME
 const HOMEDIR = homedir();
 
-const start = () => {
+// HANDLING COMMANDS
+const cmdHandler = {
+  up: goUp,
+  cd: goToDir,
+  ls: printContents,
+  cat: printFile,
+  add: addFile,
+  rn: renameFile,
+}
+
+const start = async() => {
   USERNAME = getUserName(CLI_Args.USERNAME);
   greet(USERNAME);
   process.chdir(HOMEDIR)
   logCurrentDir();
+
+const rl = createInterface({ input: process.stdin, output: process.stdout });
+
+rl.on('line', async (input) => {
+  const args = input.trim().split(' ')
+  const command = args.shift();
+
+  try{
+    await cmdHandler[command](args.join(' '))
+    logCurrentDir()
+  } catch (e) {
+    console.log(e.message); 
+  }
+}); 
 }
 
 try {
-  start();
+  await start();
 
   sayBye(USERNAME);
 } catch (e) {
   console.log(e.message);
-  // throw new Error(e.message);
 }
