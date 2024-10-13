@@ -1,0 +1,15 @@
+{
+  "name": "nodejs-file-manager",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js -- --username=malinka"
+  },
+  "author": "malinka775",
+  "license": "ISC",
+  "description": "This repo is made for implementing RSSchool Node.js course task https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/file-manager/assignment.md",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
