@@ -5,7 +5,7 @@ import {createInterface} from 'node:readline/promises';
 
 import { ErrorMessages, CLI_Args } from "../consts/constants.js";
 import { goUp, goToDir, printContents } from "../navigation/index.js";
-import { addFile, printFile, renameFile } from "../fileOperations/index.js";
+import { addFile, copyFileToDir, deleteFile, moveFile, printFile, renameFile } from "../fileOperations/index.js";
 
 const getUserName = (targetArg) => {
 
@@ -45,6 +45,9 @@ const cmdHandler = {
   cat: printFile,
   add: addFile,
   rn: renameFile,
+  cp: copyFileToDir,
+  mv: moveFile,
+  rm: deleteFile,
 }
 
 const start = async() => {
