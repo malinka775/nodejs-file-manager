@@ -13,6 +13,9 @@ const getPath = (path) => {
 const compress = async (paths) => {
   try {
     const pathsArray = paths.split(' ');
+    if(pathsArray.length < 2) {
+      throw new Error(ErrorMessages.INVALID_INPUT)
+    }
     const [target, dest] = pathsArray;
     const targetPath = getPath(target);
     const destinationPath = getPath(dest);
@@ -31,7 +34,9 @@ const compress = async (paths) => {
         ws
     );
   } catch(e) {
-    throw new Error(ErrorMessages.OPERATION_FAIL)
+    const message = e.message !== ErrorMessages.INVALID_INPUT ? ErrorMessages.OPERATION_FAIL : ErrorMessages.INVALID_INPUT
+
+    throw new Error(message)
   }
 };
 
@@ -39,6 +44,9 @@ const decompress = async (paths) => {
   try {
     const pathsArray = paths.split(' ');
     const [target, dest] = pathsArray;
+    if(pathsArray.length < 2) {
+      throw new Error(ErrorMessages.INVALID_INPUT)
+    }
     const targetPath = getPath(target);
     const destinationPath = getPath(dest);
 
@@ -52,7 +60,9 @@ const decompress = async (paths) => {
 
     await pipeline(rs, unbrotli, ws);
   } catch(e) {
-    throw new Error(ErrorMessages.OPERATION_FAIL)
+    const message = e.message !== ErrorMessages.INVALID_INPUT ? ErrorMessages.OPERATION_FAIL : ErrorMessages.INVALID_INPUT
+
+    throw new Error(message)
   }
 };
 
