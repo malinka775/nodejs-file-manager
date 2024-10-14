@@ -1,7 +1,6 @@
-import fs from 'fs/promises';
 import { join, isAbsolute } from 'node:path';
 import { createBrotliCompress, createBrotliDecompress } from 'node:zlib';
-import { createReadStream, createWriteStream } from 'fs';
+import { createReadStream, createWriteStream } from 'node:fs';
 import { pipeline } from 'node:stream/promises';
 import { ErrorMessages } from '../consts/constants.js';
 import { isDestinationExisting } from '../helpers/isExisting.js';

@@ -1,7 +1,6 @@
 import { homedir } from "node:os";
 import process from "node:process";
 import {createInterface} from "node:readline/promises";
-
 import { addFile, copyFileToDir, deleteFile, moveFile, printFile, renameFile } from "../fileOperations/index.js";
 import { goUp, goToDir, printContents } from "../navigation/index.js";
 import { getUserName } from "../helpers/getUserName.js";
