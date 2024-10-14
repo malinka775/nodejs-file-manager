@@ -7,7 +7,14 @@ const goUp = () => {
 }
 
 const goToDir = (dirname) => {
-  return new Promise((resolve, _) => resolve(process.chdir(dirname)));
+  return new Promise((resolve, reject) => {
+    try{
+      process.chdir(dirname)
+      resolve()
+    }catch(e){
+      reject(new Error(ErrorMessages.OPERATION_FAIL))
+    }
+});
 }
 
 const printContents = async () => {

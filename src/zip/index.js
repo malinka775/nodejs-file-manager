@@ -9,7 +9,7 @@ export const isDestinationExisting = async (path) => {
   try {
       const stats = await fs.stat(path);
       return stats;
-  } catch {
+  } catch(e) {
       return false;
   }
 }

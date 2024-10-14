@@ -1,27 +1,15 @@
 import { homedir } from "node:os";
 import process from "node:process";
-import util from "node:util";
-import {createInterface} from 'node:readline/promises';
+import {createInterface} from "node:readline/promises";
 
-import { ErrorMessages, CLI_Args } from "../consts/constants.js";
-import { getUserName } from "../helpers/getUserName.js";
-import { goUp, goToDir, printContents } from "../navigation/index.js";
 import { addFile, copyFileToDir, deleteFile, moveFile, printFile, renameFile } from "../fileOperations/index.js";
+import { goUp, goToDir, printContents } from "../navigation/index.js";
+import { getUserName } from "../helpers/getUserName.js";
 import { getOSInfo } from "../os/index.js";
 import { calcHash } from "../hash/index.js";
 import { compress, decompress } from "../zip/index.js";
-
-const greet = (username) => {
-  console.log(`Welcome to the File Manager, ${username}!`);
-};
-
-const sayBye = (username) => {
-  console.log(`Thank you for using File Manager, ${username}, goodbye!`);
-};
-
-const logCurrentDir = () => {
-  console.log("You are currently in", process.cwd());
-};
+import { ErrorMessages } from "../consts/constants.js";
+import { sayBye, greet, logCurrentDir } from "../output/index.js";
 
 let USERNAME
 const HOMEDIR = homedir();
@@ -55,19 +43,25 @@ rl.on('line', async (input) => {
   const args = input.trim().split(' ')
   const command = args.shift();
 
-  try{
+  try {
     await cmdHandler[command](args.join(' '))
     logCurrentDir()
   } catch (e) {
-    console.log(e.message); 
+    if (e.message === ErrorMessages.OPERATION_FAIL) {
+      console.log(e.message)
+    } else {
+      console.log(ErrorMessages.INVALID_INPUT);
+    }
   }
 }); 
+
+rl.on('close', () => {
+  sayBye(USERNAME);
+})
 }
 
 try {
   await start();
-
-  sayBye(USERNAME);
 } catch (e) {
   console.log(e.message);
 }
