@@ -44,6 +44,10 @@ rl.on('line', async (input) => {
   const command = args.shift();
 
   try {
+    if(command === '.exit') {
+      rl.close()
+      return
+    }
     await cmdHandler[command](args.join(' '))
     logCurrentDir()
   } catch (e) {
