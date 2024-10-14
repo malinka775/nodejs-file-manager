@@ -23,6 +23,10 @@ const compress = async (paths) => {
     if(!await isDestinationExisting(targetPath)) {
       throw new Error(ErrorMessages.OPERATION_FAIL)
     }
+
+    if(await isDestinationExisting(destinationPath)) {
+      throw new Error(ErrorMessages.OPERATION_FAIL)
+    }
     
     const brotli = createBrotliCompress();
     const rs = createReadStream(targetPath);
@@ -51,6 +55,10 @@ const decompress = async (paths) => {
     const destinationPath = getPath(dest);
 
     if(!await isDestinationExisting(targetPath)) {
+      throw new Error(ErrorMessages.OPERATION_FAIL)
+    }
+
+    if(await isDestinationExisting(destinationPath)) {
       throw new Error(ErrorMessages.OPERATION_FAIL)
     }
 

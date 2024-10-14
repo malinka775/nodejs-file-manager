@@ -17,6 +17,7 @@ const printFile = async (path) => {
         process.stdout.write(chunk);
       })
       rs.on('end', () => {
+        process.stdout.write('\n');
         resolve()
       })
       rs.on('error', () => {
