@@ -4,23 +4,12 @@ import util from "node:util";
 import {createInterface} from 'node:readline/promises';
 
 import { ErrorMessages, CLI_Args } from "../consts/constants.js";
+import { getUserName } from "../helpers/getUserName.js";
 import { goUp, goToDir, printContents } from "../navigation/index.js";
 import { addFile, copyFileToDir, deleteFile, moveFile, printFile, renameFile } from "../fileOperations/index.js";
-
-const getUserName = (targetArg) => {
-
-  try {
-    const {positionals: args} = util.parseArgs({allowPositionals: true});
-
-    const userNameArg = args
-      .find((el) => el.startsWith(targetArg))
-    if (!userNameArg) throw new Error();
-
-    return userNameArg.slice(targetArg.length + 1);
-  } catch (e) {
-    throw new Error(ErrorMessages.INVALID_INPUT)
-  }
-};
+import { getOSInfo } from "../os/index.js";
+import { calcHash } from "../hash/index.js";
+import { compress, decompress } from "../zip/index.js";
 
 const greet = (username) => {
   console.log(`Welcome to the File Manager, ${username}!`);
@@ -48,10 +37,14 @@ const cmdHandler = {
   cp: copyFileToDir,
   mv: moveFile,
   rm: deleteFile,
+  os: getOSInfo,
+  hash: calcHash,
+  compress,
+  decompress,
 }
 
 const start = async() => {
-  USERNAME = getUserName(CLI_Args.USERNAME);
+  USERNAME = getUserName();
   greet(USERNAME);
   process.chdir(HOMEDIR)
   logCurrentDir();

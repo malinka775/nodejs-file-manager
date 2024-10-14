@@ -5,15 +5,23 @@ import { rm, writeFile, copyFile, constants } from 'node:fs/promises';
 import { pipeline } from 'node:stream/promises';
 
 const printFile = async (path) => {
-  try {
-    const url = isAbsolute(path) ? path : join(process.cwd(), path);
-    const rs = createReadStream(url, 'utf-8');
-    rs.on('data', (chunk) => {
-      console.log(chunk);
-    })
-  } catch(e) {
-    throw new Error(ErrorMessages.OPERATION_FAIL)
-  }
+  return new Promise((resolve, reject) => {
+    try {
+      const url = isAbsolute(path) ? path : join(process.cwd(), path);
+      const rs = createReadStream(url, 'utf-8');
+      rs.on('data', (chunk) => {
+        process.stdout.write(chunk);
+      })
+      rs.on('end', () => {
+        resolve()
+      })
+      rs.on('error', () => {
+        reject(new Error(ErrorMessages.OPERATION_FAIL))
+      })
+    } catch(e) {
+      throw new Error(ErrorMessages.OPERATION_FAIL)
+    }
+  })
 }
 
 const addFile = async (path) => {
@@ -55,7 +63,7 @@ const copyFileToDir = async (paths) => {;
   }
 }
 
-const moveFile = async (paths) => {;
+const moveFile = async (paths) => {
   const pathsArr = paths.split(' ');
   const [target, ...destinationParts] = pathsArr;
   
