@@ -7,6 +7,9 @@ const goUp = () => {
 
 const goToDir = (dirname) => {
   return new Promise((resolve, reject) => {
+    if(dirname.length === 0) {
+      reject(new Error(ErrorMessages.INVALID_INPUT))
+    }
     try{
       process.chdir(dirname)
       resolve()

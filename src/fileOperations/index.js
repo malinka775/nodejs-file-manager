@@ -8,6 +8,9 @@ import { isDestinationExisting } from '../helpers/isExisting.js';
 const printFile = async (path) => {
   return new Promise((resolve, reject) => {
     try {
+      if(path.length === 0) {
+        reject(new Error(ErrorMessages.INVALID_INPUT))
+      }
       const url = isAbsolute(path) ? path : join(process.cwd(), path);
       const rs = createReadStream(url, 'utf-8');
       rs.on('data', (chunk) => {
@@ -26,6 +29,11 @@ const printFile = async (path) => {
 }
 
 const addFile = async (path) => {
+  if(path.length === 0) {
+    return new Promise((_, reject)=> {
+      reject(new Error(ErrorMessages.INVALID_INPUT))
+    })
+  }
   const destination = isAbsolute(path) ? path : join(process.cwd(), path);
   try {
     await writeFile(destination, '',{flag: 'wx'})
@@ -102,6 +110,11 @@ const moveFile = async (paths) => {
 }
 
 const deleteFile = async (path) => {
+  if(path.length === 0) {
+    return new Promise((_, reject)=> {
+      reject(new Error(ErrorMessages.INVALID_INPUT))
+    })
+  }
   const destination = isAbsolute(path) ? path : join(process.cwd(), path);
   try {
     await rm(destination);

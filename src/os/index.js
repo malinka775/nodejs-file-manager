@@ -1,5 +1,6 @@
 import os from 'node:os';
 import { getUserName } from '../helpers/getUserName.js';
+import { ErrorMessages } from '../consts/constants.js';
 
 const printCpus = () => {
   const cpus = os.cpus();
@@ -20,7 +21,11 @@ const OS_FUNCTIONS = {
 }
 
 const getOSInfo =  (param) => {
-  OS_FUNCTIONS[param]()
+  if(OS_FUNCTIONS[param]) {
+    OS_FUNCTIONS[param]()
+  } else {
+    throw new Error(ErrorMessages.INVALID_INPUT);
+  }
 }
 
 export {getOSInfo};
