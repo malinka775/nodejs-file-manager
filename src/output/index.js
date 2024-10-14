@@ -7,7 +7,7 @@ const sayBye = (username) => {
 };
 
 const logCurrentDir = () => {
-  console.log("You are currently in", process.cwd());
+  console.log('You are currently in', process.cwd());
 };
 
 export {greet, sayBye, logCurrentDir}

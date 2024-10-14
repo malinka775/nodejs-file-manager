@@ -37,35 +37,32 @@ const start = async() => {
   process.chdir(HOMEDIR)
   logCurrentDir();
 
-const rl = createInterface({ input: process.stdin, output: process.stdout });
+  const rl = createInterface({ input: process.stdin, output: process.stdout });
 
-rl.on('line', async (input) => {
-  const args = input.trim().split(' ')
-  const command = args.shift();
+  rl.on('line', async (input) => {
+    const args = input.trim().split(' ')
+    const command = args.shift();
 
-  try {
-    if(command === '.exit') {
-      rl.close()
-      return
+    try {
+      if(command === '.exit') {
+        rl.close()
+        return
+      }
+      await cmdHandler[command](args.join(' '))
+      logCurrentDir()
+    } catch (e) {
+      if (e.message === ErrorMessages.OPERATION_FAIL) {
+        console.log(e.message)
+      } else {
+        console.log(ErrorMessages.INVALID_INPUT);
+      }
+      logCurrentDir()
     }
-    await cmdHandler[command](args.join(' '))
-    logCurrentDir()
-  } catch (e) {
-    if (e.message === ErrorMessages.OPERATION_FAIL) {
-      console.log(e.message)
-    } else {
-      console.log(ErrorMessages.INVALID_INPUT);
-    }
-  }
-}); 
+  }); 
 
-rl.on('close', () => {
-  sayBye(USERNAME);
-})
+  rl.on('close', () => {
+    sayBye(USERNAME);
+  })
 }
 
-try {
-  await start();
-} catch (e) {
-  console.log(e.message);
-}
+export {start}

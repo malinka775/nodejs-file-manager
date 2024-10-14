@@ -5,7 +5,6 @@ export const getUserName = () => {
   const USERNAME_ARG ='--username';
   try {
     const {positionals: args} = util.parseArgs({allowPositionals: true});
-    console.log('from getUser', args);
     const userNameArg = args
       .find((el) => el.startsWith(USERNAME_ARG))
     if (!userNameArg) throw new Error();

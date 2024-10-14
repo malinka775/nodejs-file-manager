@@ -3,6 +3,7 @@ import { ErrorMessages } from '../consts/constants.js';
 import { isAbsolute, join, sep } from 'node:path';
 import { rm, writeFile, copyFile, constants } from 'node:fs/promises';
 import { pipeline } from 'node:stream/promises';
+import { isDestinationExisting } from '../helpers/isExisting.js';
 
 const printFile = async (path) => {
   return new Promise((resolve, reject) => {
@@ -55,6 +56,12 @@ const copyFileToDir = async (paths) => {;
   const targetPath = isAbsolute(target) ? target : join(process.cwd(), target);
   const destinationPath = isAbsolute(destination) ? destination + sep + target : join(process.cwd(), destination, target);
   try {
+    if(!await isDestinationExisting(targetPath)) {
+      throw new Error(ErrorMessages.OPERATION_FAIL)
+    }
+    if(await isDestinationExisting(destinationPath)) {
+      throw new Error(ErrorMessages.OPERATION_FAIL)
+    }
     const readable = createReadStream(targetPath);
     const writable = createWriteStream(destinationPath);
     await pipeline(readable, writable);
@@ -71,6 +78,12 @@ const moveFile = async (paths) => {
   const targetPath = isAbsolute(target) ? target : join(process.cwd(), target);
   const destinationPath = isAbsolute(destination) ? destination + sep + target : join(process.cwd(), destination, target);
   try {
+    if(!await isDestinationExisting(targetPath)) {
+      throw new Error(ErrorMessages.OPERATION_FAIL)
+    }
+    if(await isDestinationExisting(destinationPath)) {
+      throw new Error(ErrorMessages.OPERATION_FAIL)
+    }
     const readable = createReadStream(targetPath);
     const writable = createWriteStream(destinationPath);
     await pipeline(readable, writable);

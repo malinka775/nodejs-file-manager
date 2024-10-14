@@ -4,15 +4,8 @@ import { createBrotliCompress, createBrotliDecompress } from 'node:zlib';
 import { createReadStream, createWriteStream } from 'fs';
 import { pipeline } from 'node:stream/promises';
 import { ErrorMessages } from '../consts/constants.js';
+import { isDestinationExisting } from '../helpers/isExisting.js';
 
-export const isDestinationExisting = async (path) => {
-  try {
-      const stats = await fs.stat(path);
-      return stats;
-  } catch(e) {
-      return false;
-  }
-}
 
 const getPath = (path) => {
   return isAbsolute(path) ? path : join(process.cwd(), path);
