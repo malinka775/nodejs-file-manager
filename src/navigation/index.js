@@ -1,5 +1,4 @@
 import { readdir } from 'node:fs/promises';
-import {join} from 'node:path';
 import { EntityTypes, ErrorMessages } from '../consts/constants.js';
 
 const goUp = () => {
