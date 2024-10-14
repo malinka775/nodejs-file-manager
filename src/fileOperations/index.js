@@ -36,7 +36,7 @@ const addFile = async (path) => {
 
 const renameFile = async (filenames) => {
   const filenamesArr = filenames.split(' ');
-  if (filenamesArr.length > 2) throw new Error (ErrorMessages.INVALID_INPUT);
+  if (filenamesArr.length !== 2) throw new Error (ErrorMessages.INVALID_INPUT);
   const [oldName, newName] = filenamesArr;
   const oldPath = join(process.cwd(), oldName);
   const newPath = join(process.cwd(), newName);
@@ -51,6 +51,10 @@ const renameFile = async (filenames) => {
 const copyFileToDir = async (paths) => {;
   const pathsArr = paths.split(' ');
   const [target, ...destinationParts] = pathsArr;
+
+  if(pathsArr.length < 2) {
+    throw new Error(ErrorMessages.INVALID_INPUT)
+  }
   
   const destination = destinationParts.join(' ');
   const targetPath = isAbsolute(target) ? target : join(process.cwd(), target);
@@ -74,6 +78,10 @@ const moveFile = async (paths) => {
   const pathsArr = paths.split(' ');
   const [target, ...destinationParts] = pathsArr;
   
+  if(pathsArr.length < 2) {
+    throw new Error(ErrorMessages.INVALID_INPUT)
+  }
+
   const destination = destinationParts.join(' ');
   const targetPath = isAbsolute(target) ? target : join(process.cwd(), target);
   const destinationPath = isAbsolute(destination) ? destination + sep + target : join(process.cwd(), destination, target);
